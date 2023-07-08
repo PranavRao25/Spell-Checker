@@ -23,6 +23,7 @@ validW = lambda L: list({w for w in L if(valid(w))}) # valid words from a list
 P = lambda w: text[w]/sum(text.values()) if valid(w) else 0 # P(W=w)
 
 delW = lambda w: [w[:i]+w[i+1:] for i in range(len(w))] # all words from deleting 1 char
+perW = lambda w: [w[:i]+w[i+1]+w[i]+w[i+2:] for i in range(len(w)-1)] # all words from 1 char swap
 
 def insW(w): # all words from inserting 1 char
     ins=[]
@@ -38,7 +39,7 @@ def repW(w): # all words from replacing 1 char
             rep.append(w[:i]+chr(ch)+w[i+1:])
     return rep
 
-edit = lambda w: delW(w)+insW(w)+repW(w) # all 1 char variations/misspells of a word
+edit = lambda w: delW(w)+insW(w)+repW(w)+perW(w) # all 1 char variations/misspells of a word
 
 def probab(w,c): # P(W=w|C=c)
     a,b=1,0.9
