@@ -3,8 +3,8 @@ import re
 class SpellChecker: # Spell Checker Class
     text={} # freq table with keys as words, values as freq
     
-    def __init__(self): # creating the dataset
-        with open('gutenberg.txt') as f: # text corpus used for valid words
+    def __init__(self,file='gutenberg.txt'): # creating the dataset
+        with open(file,'r') as f: # text corpus used for valid words
             for line in f.readlines(): # data formatting
                 for w in re.sub(r'^\W+|\W+$','',line.strip(),re.IGNORECASE).lower().split(' '):
                     w = re.sub(r'^\W+|\W+$','',w,re.IGNORECASE)
@@ -52,7 +52,7 @@ class SpellChecker: # Spell Checker Class
             else:
                 return g if(c in Gw) else 0
 
-    def spellCheck(self,w): # Naive Bayesian Classifier
+    def _correcter(self,w): # Naive Bayesian Classifier
         max,cw,Cw=0,w,self._edit(w)
         Fw,Gw=self._validW(Cw),set()
 
@@ -65,5 +65,15 @@ class SpellChecker: # Spell Checker Class
             if(max<p):
                 max,cw=p,c
         return cw
+    
+    def spellCheck(self,file='check.txt'): # Spell Check an input file
+        with open(file,'r') as f:
+            lines = f.readlines()
+        for line in lines:
+            for _ in re.sub(r'^\W+|\W+$','',line.strip()).lower().split(' '):
+                w = re.sub(r'^\W+|\W+$','',_)
+                if(w!='' and w.isalpha() and not self._valid(w)):
+                    print(f'Change {w} -> {self._correcter(w)}')
 
 spl = SpellChecker() # creating a spellchecker object
+spl.spellCheck()
