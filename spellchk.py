@@ -23,7 +23,15 @@ validW = lambda L: list({w for w in L if(valid(w))}) # valid words from a list
 P = lambda w: text[w]/sum(text.values()) if valid(w) else 0 # P(W=w)
 
 delW = lambda w: [w[:i]+w[i+1:] for i in range(len(w))] # all words from deleting 1 char
-perW = lambda w: [w[:i]+w[i+1]+w[i]+w[i+2:] for i in range(len(w)-1)] # all words from 1 char swap
+perm3 = lambda w: [w[0]+w[1]+w[2],w[1]+w[2]+w[0],w[2]+w[0]+w[1],w[2]+w[1]+w[0],w[1]+w[0]+w[2],w[0]+w[2]+w[1]]
+# perm3 permutates 3 letters
+
+def perW(w): # permutates letters
+    perm = [w[:i]+w[i+1]+w[i]+w[i+2:] for i in range(len(w)-1)]
+    for i in range(len(w)-2):
+        for k in perm3(w[i:i+3]):
+            perm.append(w[:i]+k+w[i+3:])
+    return perm
 
 def insW(w): # all words from inserting 1 char
     ins=[]
@@ -41,17 +49,26 @@ def repW(w): # all words from replacing 1 char
 
 edit = lambda w: delW(w)+insW(w)+repW(w)+perW(w) # all 1 char variations/misspells of a word
 
-def probab(w,c): # P(W=w|C=c)
-    a,b=1,0.9
+def probab(w,c,Fw,Gw): # P(W=w|C=c)
+    a,b,g=1,0.9,0.8
     if(valid(w)):
         return a if(w==c) else 0
     else:
-        return b if(c in validW(edit(w))) else 0
+        if(len(Fw)):
+            return b if(c in Fw) else 0
+        else:
+            return g if(c in Gw) else 0
 
 def spellCheck(w): # Naive Bayesian Classifier
     max,cw,Cw=0,w,edit(w)
+    Fw,Gw=validW(Cw),set()
+    
+    for i in Cw:
+        Gw.update(set(validW(edit(i))))
+    Gw = list(Gw)
+    
     for c in Cw:
-        p = probab(w,c)*P(c)
+        p = probab(w,c,Fw,Gw)*P(c)
         if(max<p):
             max,cw=p,c
     return cw
