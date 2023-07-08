@@ -13,11 +13,11 @@ How the Spell Checker works:
 4. What makes it Naive is the fact that we assume that the occurence of each word is independent of other words. Although this is a imperfect assumption, it provides a decent prediction.
 
 The Alternate valid words (or classifications) are obtained as following:
-1. Cyclic Permutation: <?>
-2. Swapping one character :
-3. Deleting one character :
-4. Inserting one character :
-5. Replacing one character :
+1. Cyclic Permutation: O(n)
+2. Swapping one character : O(n^2)
+3. Deleting one character : O(n)
+4. Inserting one character : O(n^2)
+5. Replacing one character : O(n^2)
 Further changes in terms of more characters can be made to increase the accuracy, but keeping in mind the speed of the checker, it is not recommended.
 
 Accuracy : 
