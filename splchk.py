@@ -9,10 +9,10 @@ class SpellChecker:
                     w = re.sub(r'^\W+|\W+$','',w,re.IGNORECASE)
                     if(w!='' and w.isalpha()):
                         self.text[w] = (self.text[w]+1) if(w in self.text.keys()) else 0
-
+    
     _valid = lambda self,word: (word in self.text.keys())
-    _validW = lambda self,L: list({w for w in L if(self.valid(w))})
-    _P = lambda self,w: self.text[w]/sum(self.text.values()) if self.valid(w) else 0
+    _validW = lambda self,L: list({w for w in L if(self._valid(w))})
+    _P = lambda self,w: self.text[w]/sum(self.text.values()) if self._valid(w) else 0
 
     _delW = lambda self,w: [w[:i]+w[i+1:] for i in range(len(w))]
     _cycle = lambda self,w: [w[i+1:]+w[:i+1] for i in range(len(w)-1)]
@@ -42,7 +42,7 @@ class SpellChecker:
 
     def _probab(self,w,c,Fw,Gw):
         a,b=1,0.9
-        if(self.valid(w)):
+        if(self._valid(w)):
             return a if(w==c) else 0
         else:
             if(len(Fw)):
@@ -64,4 +64,4 @@ class SpellChecker:
                 max,cw=p,c
         return cw
 
-    spl = SpellChecker()
+spl = SpellChecker()
