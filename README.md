@@ -1,5 +1,6 @@
 # Spell-Checker
 This is an individual project based on a Naive Bayesian Spell Checker.
+This project is an extension on an lab question of CS2180 Artificial Intelligence Lab.
 
 The default Dataset used is the War and Peace book by Leo Tolstoy from Project Gutenburg Website (https://www.gutenberg.org/cache/epub/2600/pg2600.txt).
 However, an option is provided of using own dataset.
@@ -19,6 +20,5 @@ The Alternate valid words (or classifications) are obtained as following:
 3. Deleting one character : O(n)
 4. Inserting one character : O(n^2)
 5. Replacing one character : O(n^2)
+There are two sets, Fw and Gw, with Fw being the set of all variations of a word, and Gw being the set of all variations of the elements in Fw.
 Further changes in terms of more characters can be made to increase the accuracy, but keeping in mind the speed of the checker, it is not recommended.
-
-Accuracy : 90%
