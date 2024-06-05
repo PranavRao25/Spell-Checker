@@ -7,6 +7,7 @@ class SpellChecker:  # Spell Checker Class
 
     def __init__(self, file='gutenberg.txt', a=1, b=0.9, g=0.8):  # creating the dataset
         self.a, self.b, self.g = a, b, g
+
         with open(file, 'r') as f:  # text corpus used for valid words
             lines = f.readlines()
         for line in lines:  # data formatting
@@ -67,16 +68,10 @@ class SpellChecker:  # Spell Checker Class
                 max, cw = p, c
         return cw
 
-    def spellCheck(self, file):  # Spell Check an input file
-        with open(file, 'r') as f:
-            lines = f.readlines()
-
-        for i in range(len(lines)):
-            for _ in re.sub(r'^\W+|\W+$', '', lines[i].strip()).lower().split(' '):
-                w = re.sub(r'^\W+|\W+$', '', _)
-                if w != '' and w.isalpha() and not self._valid(w):
-                    c = self._correcter(w)
-                    if c != w:
-                        print(f'At line no {i} : Change {w} -> {c}')
-                    else:
-                        print(f'At line no {i} : Unknown word {w}')
+    def spellCheck(self, line):  # Spell Check an input file
+        for _ in re.sub(r'^\W+|\W+$', '', line.strip()).lower().split(' '):
+            w = re.sub(r'^\W+|\W+$', '', _)
+            if w != '' and w.isalpha() and not self._valid(w):
+                c = self._correcter(w)
+                s = f'At index no {line.find(w)} : Change {w} -> {c}' if c != w else f'At index no {line.find(w)} : Unknown word {w}'
+                return s
